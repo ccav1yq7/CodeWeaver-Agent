@@ -1,0 +1,13 @@
+[
+  {
+    "id": "local-repair",
+    "repository": "/replace/with/trusted/local/repository",
+    "commit": "0000000000000000000000000000000000000000",
+    "prompt": "Describe the bug without disclosing hidden tests.",
+    "grade_argv": ["/usr/bin/python3", "-m", "unittest", "discover"],
+    "hidden_patch": null,
+    "allowed_paths": ["src"],
+    "baseline_exit": 1,
+    "timeout": 60
+  }
+]

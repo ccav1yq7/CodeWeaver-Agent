@@ -1,0 +1,17 @@
+# Pass --config explicitly. Never put a literal API key here.
+provider = "openai"
+model = "gpt-4o-mini"
+key_env = "OPENAI_API_KEY"
+mode = "review"
+max_rounds = 20
+max_tools = 80
+command_timeout = 60
+deny_tools = []
+# Exact argv grants, if explicitly desired:
+# allow_commands = [["/usr/bin/python3", "-m", "unittest", "discover"]]
+
+# Optional reviewed MCP program (requires --mcp and approval):
+# [[connectors]]
+# name = "local"
+# command = ["/absolute/path/to/python", "/absolute/path/to/server.py"]
+# environment = ["EXPLICIT_SERVICE_TOKEN"]
