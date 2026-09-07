@@ -4,7 +4,7 @@ permissions:
   contents: read
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     strategy:
       matrix:
         python: ['3.11', '3.13']
@@ -18,5 +18,7 @@ jobs:
       - run: uv run --no-sync ruff format --check src tests
       - run: uv run --no-sync pytest
       - run: sudo apt-get update -qq && sudo apt-get install -y bubblewrap
+      - name: Permit the sandbox launcher to create namespaces on the disposable runner
+        run: sudo apparmor_parser -r examples/bwrap.apparmor
       - run: uv run --no-sync python examples/verify_sandbox.py
       - run: uv build

@@ -10,6 +10,11 @@ and [migration](docs/MIGRATION.md).
 Python 3.11+ on Linux. File tools require POSIX descriptor-relative APIs; command execution additionally
 requires an operational `bwrap` installation and permitted user/network namespaces. No unsandboxed fallback.
 The native Tk client also needs your distribution's Python Tk package.
+Ubuntu 24.04 additionally restricts capabilities in unprivileged user namespaces. An administrator must
+permit the sandbox launcher through an appropriate AppArmor profile; see the
+[Ubuntu release notes](https://documentation.ubuntu.com/release-notes/24.04/#unprivileged-user-namespace-restrictions).
+CI uses `examples/bwrap.apparmor` for `/usr/bin/bwrap` on its disposable Ubuntu 24.04 runner. The application
+does not install that profile or alter host security settings itself.
 
 ```bash
 uv sync --locked --all-extras

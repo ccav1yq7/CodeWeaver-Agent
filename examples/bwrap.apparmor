@@ -1,0 +1,8 @@
+# Explicit namespace permission for the sandbox launcher on Ubuntu 24.04.
+# This profile is installed only on the disposable CI runner.
+abi <abi/4.0>,
+include <tunables/global>
+
+profile codeweaver_ci_bwrap /usr/bin/bwrap flags=(unconfined) {
+    userns,
+}
