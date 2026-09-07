@@ -134,3 +134,20 @@ def test_no_configuration_file_required_or_repository_autoloaded(tmp_path, monke
 def test_unsafe_provider_urls_rejected(url):
     with pytest.raises(ValueError):
         Settings(base_url=url)
+
+
+async def test_startup_failure_reports_the_kernel_reason_without_retry(tmp_path):
+    from unittest.mock import AsyncMock
+
+    failure = {
+        "exit_code": 1,
+        "output": "bwrap: Creating new namespace failed: Operation not permitted\n",
+        "truncated": False,
+    }
+    with (
+        patch("codeweaver.process.sandbox_command", return_value=["bwrap"]),
+        patch("codeweaver.process.capture", new_callable=AsyncMock, return_value=failure) as runner,
+    ):
+        with pytest.raises(IsolationError, match="Operation not permitted"):
+            await execute(tmp_path, ["true"], 2)
+        runner.assert_awaited_once()

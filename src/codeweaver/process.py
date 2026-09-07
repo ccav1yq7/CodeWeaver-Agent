@@ -92,5 +92,8 @@ async def execute(root: Path, argv: list[str], timeout: int) -> dict:
     command = sandbox_command(root, argv)
     result = await capture(command, root, timeout, environment={"PATH": "/usr/bin:/bin"})
     if result["exit_code"] and result["output"].startswith("bwrap:"):
-        raise IsolationError("bubblewrap could not establish isolation; command was not retried")
+        raise IsolationError(
+            "bubblewrap could not establish isolation; command was not retried: "
+            + result["output"].splitlines()[0][:500]
+        )
     return result
