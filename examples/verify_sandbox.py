@@ -18,9 +18,15 @@ import os, sys
 from pathlib import Path
 assert os.readlink('/proc/self/ns/net') != sys.argv[1]
 assert not Path('/home').exists()
-assert Path('.env').read_text() == ''
+try:
+    assert Path('.env').read_text() == ''
+except PermissionError:
+    pass  # A nodev mount may deny opening the masked device entirely.
 Path('allowed.txt').write_text('ok')
-Path('.codeweaver/hidden-write').write_text('isolated')
+try:
+    Path('.codeweaver/hidden-write').write_text('isolated')
+except PermissionError:
+    pass  # A protected tmpfs may also be read-only to the sandbox UID.
 print('isolated command passed')
 """
         result = await execute(root, ["/usr/bin/python3", "-c", program, namespace], 10)
